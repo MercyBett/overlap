@@ -1,17 +1,15 @@
-./client/node_modules
-./server/node_modules
-.client/yarn-error.log
 
-# dependencies
+node_modules/
+/client/yarn-error.log
 
 ./client/.pnp
 .pnp.js
 
 # testing
-./client/coverage
+client/coverage/
 
 # production
-./client/build
+client/build/
 
 # misc
 .DS_Store
