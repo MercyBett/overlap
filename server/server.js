@@ -1,9 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const router = express.Router();
-// import { detectOverlappingWords } from "./overlap";
-const overlap = require("./overlap.js");
+const { detectOverlappingWords } = require("./overlap");
+
 const app = express();
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -16,7 +15,7 @@ app.use(bodyParser.json());
 app.post("", (req, res) => {
   const word1 = req.body.word1;
   const word2 = req.body.word2;
-  const result = overlap.detectOverlappingWords(word1, word2);
+  const result = detectOverlappingWords(word1, word2);
   res.json(result);
 });
 

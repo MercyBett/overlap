@@ -1,57 +1,34 @@
 function detectOverlappingWords(word1, word2) {
-  let overlappingCharacters = "";
-  let longestOverlap = 0;
+  /* Creating a matrix with the length of the strings plus one. */
+  const m = word1.length;
+  const n = word2.length;
+  const matrix = new Array(m + 1).fill(new Array(n + 1).fill(0));
 
-  // check if any of the characters in word1 are present in word2
-  for (let i = 0; i < word1.length; i++) {
-    const currentCharacter = word1[i];
-
-    // if the character is present in word2, check if it's a part of the longest overlap
-    if (word2.includes(currentCharacter)) {
-      // create a temporary string that includes the current character
-      let tempOverlappingCharacters = currentCharacter;
-
-      // start checking for characters after the current one
-      for (let j = i + 1; j < word1.length; j++) {
-        const nextCharacter = word1[j];
-
-        // if the next character is present in word2, add it to the temporary string
-        if (word2.includes(nextCharacter)) {
-          tempOverlappingCharacters += nextCharacter;
-        } else {
-          // if the next character is not present in word2, break out of the loop
-          break;
-        }
-      }
-
-      // if the temporary string is longer than the longest overlap so far, update the longest overlap
-      if (tempOverlappingCharacters.length > longestOverlap) {
-        longestOverlap = tempOverlappingCharacters.length;
-        overlappingCharacters = tempOverlappingCharacters;
-      }
+  /* This is the dynamic programming part of the algorithm. It is filling the matrix with the longest
+  common subsequence lengths. */
+  for (let i = 0; i <= m; i++) {
+    for (let j = 0; j <= n; j++) {
+      if (i == 0 || j == 0) matrix[i][j] = 0;
+      else if (word1[i - 1] == word2[j - 1])
+        matrix[i][j] = matrix[i - 1][j - 1] + 1;
+      else matrix[i][j] = Math.max(matrix[i - 1][j], matrix[i][j - 1]);
     }
   }
 
-  return {
-    overlappingCharacters,
-    longestOverlap,
-  };
+  let overlappingCharacters = "";
+
+  /* This is the backtracking part of the algorithm. It is going through the matrix and finding the
+  longest common subsequence. */
+  (i = m), (j = n);
+  while (i > 0 && j > 0) {
+    if (word1[i - 1] == word2[j - 1]) {
+      overlappingCharacters = word1[i - 1] + overlappingCharacters;
+      i--;
+      j--;
+    } else if (matrix[i - 1][j] > matrix[i][j - 1]) i--;
+    else j--;
+  }
+  return overlappingCharacters;
 }
 
-// const word1 = "device";
-// const word2 = "ice";
-
-// console.log(detectOverlappingWords(word1, word2));
-// // expected output: { overlappingCharacters: 'ice', longestOverlap: 3 }
-
-// const word3 = "client";
-
-// console.log(detectOverlappingWords(word1, word3));
-// // expected output: { overlappingCharacters: 'ie', longestOverlap: 2 }
-
-// const word4 = "orange";
-// const word5 = "rhinoceros";
-
-// console.log(detectOverlappingWords(word4, word5));
-// // expected output: { overlappingCharacters: 'rne', longestOverlap: 3 }
 module.exports = { detectOverlappingWords };

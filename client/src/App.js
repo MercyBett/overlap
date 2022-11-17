@@ -17,8 +17,8 @@ function App() {
     });
     const data = await response.json();
     console.log(data);
-    setCharacter(data.overlappingCharacters);
-    setNumber(data.longestOverlap);
+    setCharacter(data);
+    setNumber(data.length);
     console.log(character);
   };
 
